@@ -7,11 +7,11 @@ import ru.job4j.model.Link;
 import java.util.Objects;
 
 @Service
-public class ConvertService {
+public class LinkService {
     private final LinkRepository repository;
     private final UniqueStringGenerator uniqueStringGenerator;
 
-    public ConvertService(LinkRepository repository, UniqueStringGenerator uniqueStringGenerator) {
+    public LinkService(LinkRepository repository, UniqueStringGenerator uniqueStringGenerator) {
         this.repository = repository;
         this.uniqueStringGenerator = uniqueStringGenerator;
     }
@@ -27,5 +27,10 @@ public class ConvertService {
             repository.save(link);
         }
         return shortUrl;
+    }
+
+    public String getFullUrl(String code) {
+        Link link = repository.findByShortUrl(code);
+        return Objects.isNull(link) ? "" : link.getUrl();
     }
 }

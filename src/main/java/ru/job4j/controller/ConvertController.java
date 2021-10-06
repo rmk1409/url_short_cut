@@ -5,16 +5,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.job4j.model.Link;
-import ru.job4j.service.ConvertService;
+import ru.job4j.service.LinkService;
 
 import java.util.Map;
 
 @RestController
 @RequestMapping("/convert")
 public class ConvertController {
-    private final ConvertService service;
+    private final LinkService service;
 
-    public ConvertController(ConvertService service) {
+    public ConvertController(LinkService service) {
         this.service = service;
     }
 
