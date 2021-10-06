@@ -4,6 +4,9 @@ import org.springframework.stereotype.Service;
 import ru.job4j.dao.LinkRepository;
 import ru.job4j.model.Link;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -31,6 +34,19 @@ public class LinkService {
 
     public String getFullUrl(String code) {
         Link link = repository.findByShortUrl(code);
-        return Objects.isNull(link) ? "" : link.getUrl();
+        String redirectPath = "";
+        if (Objects.nonNull(link)) {
+            redirectPath = link.getUrl();
+            link.setInvocationQuantity(link.getInvocationQuantity() + 1);
+            repository.save(link);
+        }
+        return redirectPath;
+    }
+
+    public List<Map<String, Object>> getStats() {
+        Iterable<Link> all = repository.findAll();
+        List<Map<String, Object>> stats = new ArrayList<>();
+        all.forEach(link -> stats.add(Map.of("url", link.getUrl(), "total", link.getInvocationQuantity())));
+        return stats;
     }
 }
