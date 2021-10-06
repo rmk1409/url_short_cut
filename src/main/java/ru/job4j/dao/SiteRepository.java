@@ -5,4 +5,6 @@ import ru.job4j.model.WebSite;
 
 public interface SiteRepository extends CrudRepository<WebSite, Long> {
     WebSite findBySite(String site);
+
+    WebSite findByLogin(String login);
 }
