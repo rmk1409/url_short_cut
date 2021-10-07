@@ -1,6 +1,7 @@
 package ru.job4j.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.job4j.dao.LinkRepository;
 import ru.job4j.model.Link;
 
@@ -32,12 +33,13 @@ public class LinkService {
         return shortUrl;
     }
 
+    @Transactional
     public String getFullUrl(String code) {
         Link link = repository.findByShortUrl(code);
         String redirectPath = "";
         if (Objects.nonNull(link)) {
             redirectPath = link.getUrl();
-            link.setInvocationQuantity(link.getInvocationQuantity() + 1);
+            repository.incrementInvocationQuantity(link.getId());
             repository.save(link);
         }
         return redirectPath;
